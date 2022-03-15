@@ -1,5 +1,3 @@
-# meta-http
-```
 package metahttp
 
 import (
@@ -223,5 +221,3 @@ func (rrt retryRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) 
 		}
 	}
 }
-
-```

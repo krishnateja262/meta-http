@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	metahttp "bitbucket.org/onmeta/meta-fiat/meta_http"
 	"github.com/go-kit/log"
+	metahttp "github.com/krishnateja262/meta-http/pkg"
 )
 
 func TestMetaHTTPClient(t *testing.T) {
