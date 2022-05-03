@@ -12,9 +12,10 @@ import (
 )
 
 type Client struct {
-	BaseURL    string
-	log        log.Logger
-	HTTPClient *http.Client
+	BaseURL        string
+	log            log.Logger
+	HTTPClient     *http.Client
+	defaultHeaders map[string]string
 }
 
 type Retry struct {
@@ -54,6 +55,10 @@ func NewClientWithRetry(baseUrl string, log log.Logger, timeout time.Duration, r
 			Timeout: timeout,
 		},
 	}
+}
+
+func (c *Client) SetDefaultHeaders(headers map[string]string) {
+	c.defaultHeaders = headers
 }
 
 type HttpClientErrorResponse struct {
@@ -125,6 +130,11 @@ func (c *Client) Get(ctx context.Context, path string, headers map[string]string
 	}
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
+
+	for k, v := range c.defaultHeaders {
+		req.Header.Set(k, v)
+	}
+
 	for k, v := range headers {
 		req.Header.Set(k, v)
 	}
@@ -146,6 +156,11 @@ func (c *Client) Post(ctx context.Context, path string, headers map[string]strin
 	}
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
+
+	for k, v := range c.defaultHeaders {
+		req.Header.Set(k, v)
+	}
+
 	for k, v := range headers {
 		req.Header.Set(k, v)
 	}
@@ -167,6 +182,11 @@ func (c *Client) Put(ctx context.Context, path string, headers map[string]string
 	}
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
+
+	for k, v := range c.defaultHeaders {
+		req.Header.Set(k, v)
+	}
+
 	for k, v := range headers {
 		req.Header.Set(k, v)
 	}
