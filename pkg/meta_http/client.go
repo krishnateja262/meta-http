@@ -109,13 +109,17 @@ func (c *Client) sendRequest(req *http.Request, v interface{}) error {
 func generateUrl(basePath string, relativePath string) string {
 	x := basePath[len(basePath)-1]
 	if x == '/' {
-		if relativePath[0] == '/' {
+		if relativePath == "" {
+			return basePath[:len(basePath)-1]
+		} else if relativePath[0] == '/' {
 			return basePath[:len(basePath)-1] + relativePath
 		} else {
 			return basePath + relativePath
 		}
 	} else {
-		if relativePath[0] == '/' {
+		if relativePath == "" {
+			return basePath
+		} else if relativePath[0] == '/' {
 			return basePath + relativePath
 		} else {
 			return basePath + "/" + relativePath
