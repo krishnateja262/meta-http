@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -211,14 +210,11 @@ func (l loggingRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) 
 	presentTime := time.Now()
 	l.logger.Log("message", "Initiating call", "path", r.URL.Path, "host", r.URL.Host)
 	res, err := l.next.RoundTrip(r)
-	if res == nil {
+	if err != nil {
 		l.logger.Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "error", err.Error())
-		return nil, errors.New("Timeout")
+		return nil, err
 	}
 	l.logger.Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "status", res.StatusCode)
-	if err != nil {
-		l.logger.Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "status", res.StatusCode, "error", err.Error())
-	}
 	return res, err
 }
 
