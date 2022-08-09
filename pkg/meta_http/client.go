@@ -212,7 +212,8 @@ func (l loggingRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) 
 	l.logger.Log("message", "Initiating call", "path", r.URL.Path, "host", r.URL.Host)
 	res, err := l.next.RoundTrip(r)
 	if res == nil {
-		return nil, errors.New("url is unreachable")
+		l.logger.Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "error", err.Error())
+		return nil, errors.New("Timeout")
 	}
 	l.logger.Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "status", res.StatusCode)
 	if err != nil {
