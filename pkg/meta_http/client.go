@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
 )
 
 type Client struct {
@@ -208,13 +209,13 @@ type loggingRoundTripper struct {
 
 func (l loggingRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
 	presentTime := time.Now()
-	l.logger.Log("message", "Initiating call", "path", r.URL.Path, "host", r.URL.Host)
+	level.Debug(l.logger).Log("message", "Initiating call", "path", r.URL.Path, "host", r.URL.Host)
 	res, err := l.next.RoundTrip(r)
 	if err != nil {
-		l.logger.Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "error", err.Error())
+		level.Debug(l.logger).Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "error", err.Error())
 		return nil, err
 	}
-	l.logger.Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "status", res.StatusCode)
+	level.Debug(l.logger).Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "status", res.StatusCode)
 	return res, err
 }
 
