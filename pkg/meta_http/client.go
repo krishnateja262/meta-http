@@ -144,7 +144,7 @@ func (c *Client) Get(ctx context.Context, path string, headers map[string]string
 		req.Header.Set(k, v)
 	}
 
-	ctxHeaders := fetchHeadersFromContext(ctx)
+	ctxHeaders := FetchHeadersFromContext(ctx)
 	for k, v := range ctxHeaders {
 		req.Header.Set(k, v)
 	}
@@ -176,7 +176,7 @@ func (c *Client) Post(ctx context.Context, path string, headers map[string]strin
 		req.Header.Set(k, v)
 	}
 
-	ctxHeaders := fetchHeadersFromContext(ctx)
+	ctxHeaders := FetchHeadersFromContext(ctx)
 	for k, v := range ctxHeaders {
 		req.Header.Set(k, v)
 	}
@@ -208,7 +208,7 @@ func (c *Client) Put(ctx context.Context, path string, headers map[string]string
 		req.Header.Set(k, v)
 	}
 
-	ctxHeaders := fetchHeadersFromContext(ctx)
+	ctxHeaders := FetchHeadersFromContext(ctx)
 	for k, v := range ctxHeaders {
 		req.Header.Set(k, v)
 	}

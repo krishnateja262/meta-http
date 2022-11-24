@@ -1,6 +1,9 @@
 package metahttp
 
-import "context"
+import (
+	"context"
+	"net/http"
+)
 
 type contextKey string
 
@@ -15,7 +18,7 @@ const (
 
 var contextKeys = []contextKey{UserID, TenantID, RequestID, MerchantAPIKey, APIContextKey, AuthorizationKey}
 
-func fetchHeadersFromContext(ctx context.Context) map[string]string {
+func FetchHeadersFromContext(ctx context.Context) map[string]string {
 	ctxHeaders := map[string]string{}
 	for _, key := range contextKeys {
 		val, ok := ctx.Value(key).(string)
@@ -25,4 +28,14 @@ func fetchHeadersFromContext(ctx context.Context) map[string]string {
 	}
 
 	return ctxHeaders
+}
+
+func FetchContextFromHeaders(ctx context.Context, r *http.Request) context.Context {
+	for _, key := range contextKeys {
+		val := r.Header.Get(string(key))
+		if val != "" {
+			ctx = context.WithValue(ctx, key, val)
+		}
+	}
+	return ctx
 }
