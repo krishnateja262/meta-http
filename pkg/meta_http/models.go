@@ -10,7 +10,7 @@ type contextKey string
 const (
 	UserID           contextKey = "user-id"
 	TenantID         contextKey = "tenant-id"
-	RequestID        contextKey = "request-id"
+	RequestID        contextKey = "x-request-id"
 	MerchantAPIKey   contextKey = "x-api-key"
 	APIContextKey    contextKey = "apikey"
 	AuthorizationKey contextKey = "Authorization"

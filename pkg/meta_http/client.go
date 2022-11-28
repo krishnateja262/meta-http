@@ -227,13 +227,13 @@ type loggingRoundTripper struct {
 
 func (l loggingRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
 	presentTime := time.Now()
-	level.Debug(l.logger).Log("message", "Initiating call", "path", r.URL.Path, "host", r.URL.Host)
+	level.Debug(l.logger).Log("msg", "Initiating call", "path", r.URL.Path, "host", r.URL.Host, string(RequestID), r.Header.Get(string(RequestID)))
 	res, err := l.next.RoundTrip(r)
 	if err != nil {
-		level.Debug(l.logger).Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "error", err.Error())
+		level.Debug(l.logger).Log("msg", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime).Milliseconds(), "error", err.Error(), string(RequestID), r.Header.Get(string(RequestID)))
 		return nil, err
 	}
-	level.Debug(l.logger).Log("message", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime), "status", res.StatusCode)
+	level.Debug(l.logger).Log("msg", "Call Ended", "path", r.URL.Path, "host", r.URL.Host, "duration", time.Since(presentTime).Milliseconds(), "status", res.StatusCode, string(RequestID), r.Header.Get(string(RequestID)))
 	return res, err
 }
 

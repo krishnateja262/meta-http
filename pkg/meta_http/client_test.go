@@ -90,6 +90,7 @@ func TestContextHeaders(t *testing.T) {
 	var res map[string]string
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, metahttp.UserID, "userId")
+	ctx = context.WithValue(ctx, metahttp.RequestID, "request-id")
 
 	err := metaHttpClient.Post(ctx, "/test", map[string]string{}, req, &res)
 	if err != nil {
